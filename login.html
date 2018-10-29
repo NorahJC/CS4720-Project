@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>M.A.N. High School Portal</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"-->
+    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script-->
+    <!--script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script-->
+    <!--link rel="stylesheet" href="styles.css"-->
+<style>
+body {
+	background-color:lightblue;
+	/*border-color: lightblue;*/
+	font-family: Georgia, serif;
+	margin: 0; 
+}
+div.container-fluid-1{
+	/*background-color:lightblue;*/
+	/*top, right, bottom, left*/
+	padding:0px 50px 0px 50px;
+}
+img.login-page {
+	width: 30%;
+	width: 100;
+	height: 250;
+	padding:5px;
+	/*icon w-50%, w-50 h-150*/
+	display: block;
+    margin: 0 auto;
+}
+hr.style-one {
+    border: 0;
+    height: 1px;
+    background: #333;
+	/* Gradient color1 - color2 - color1 */
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+div.container-fluid-2{
+	/*background-color:lightblue;*/
+	/*top, right, bottom, left*/
+	padding: 0px 50px 0px 30px;
+}
+h1{
+	font-size:40px;
+}
+p.login-page{
+	text-align: center;
+	font-size: 16px;
+	font-weight: 535;
+}
+footer.container-fluid-1{
+	/*background-color:lightblue;*/
+	/*top, right, top, left*/
+	padding: 10px;
+}
+/* Full-width input fields */
+input[type=text], input[type=password] {
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Set a style for login button/all buttons */
+button {
+    background-color: #00BFFF/*#4CAF50*/;
+    color: white;
+    padding: 15px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 20%;
+	  position: relative;
+  top: 50%;
+  left: 25%; 
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+}
+
+/* Center the image and position the close button */
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+    position: relative;
+}
+
+img.avatar {
+    width: 40%;
+    border-radius: 50%;
+}
+/*div modal input fields position*/
+.container {
+    /*padding: 16px;*/
+	padding-left: 115px;
+	padding-right: 20px;
+
+}
+
+span.psw {
+    float: center;
+    padding-top: 0px;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #D9EAF3; /* #fefefe;*/
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 2px solid #888;
+    width: 45%; /* Could be more or less, depending on screen size */
+	/*text-align: center;*/
+}
+
+/* The Close Button (x) */
+.close {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: red;
+    cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+}
+    
+@keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+    .cancelbtn {
+       width: 100%;
+    }
+}
+
+</style>
+</head>
+<body>
+	<div class="container-fluid-1">
+		<img class = "login-page" src="proj_logo_blue.jpg" alt = "man-hs-logo">
+		<hr class = "style-one">
+	</div><div class="container-fluid-2">
+		<h1 style = "text-align:center">Welcome to the M.A.N. High School Learning Portal</h1>
+		<p class = "login-page">
+			This portal provides access to the M.A.N. HS Learning Portal System. Use your M.A.N. ID to login.
+			<br>
+			<br>
+		<b>	System Check:</b>
+			<br>
+			Please make sure your device meets the system requirements you log in. 
+			<br>
+			<br>
+		<b>	Technical Assistance:</b>
+			<br>
+			Faculty/Staff: email service@man.marietta.edu or call 470-008-6099
+			<br>
+			Students: email studenthelpdesk@man.marietta.edu or call 470-078-0555
+			<br>
+			<br>
+		<b>	Portal Training:</b>
+			<br>
+			M.A.N. Portal Training Resources 
+			<br>
+			M.A.N. FAQs
+	    </p>
+	</div>
+	<div id="id02" class="modal2"></div>
+		<div class="click-to-open" data-modal="id02">
+	
+
+		<form class="modal-content animate" action="/action_page.php">
+			<div class="imgcontainer">
+			  <!--span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span-->
+			  <img src="logo_icon.png" alt="Avatar" class="avatar">
+			</div>
+			<div class="container text-left">
+				<label><b>Username</b></label>
+				<br>
+				<input type="text" placeholder="Enter Username" name="uname" required>
+				<br>
+				<label><b>Password</b></label>
+				<br>
+				<input type="password" placeholder="Enter Password" name="psw" required>
+				<br>	
+				<button type="submit">Login</button>
+				<br>
+				<br>
+				<br>
+			</div>	
+				<label> Forgot <span class="psw"> <a href="#">password?</a></span>					  
+			</label>
+				
+				
+		</form>
+	</div>
+	<footer class="container-fluid-1">
+		<hr class = "style-one">
+		<p class = "login-page">Copyright © 2018
+		</p>
+	</footer>	  
+</body>
+</html>
