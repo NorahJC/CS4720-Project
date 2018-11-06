@@ -14,6 +14,7 @@ class dbHandler{
 		Need to be implemented methods: *all will be needed for runtime
 			addHomework
 			addEvent
+			addWish
 			getHomework
 			getEvents
 			getMessages
@@ -107,6 +108,25 @@ class dbHandler{
 		{
 			echo "Error: " . $e->getMessage();
 		}	
+	}
+	
+	function addHomework($ClassID, $HomeworkName, $DueDate, $Description){
+		try{			
+			$stmt = $this->conn->prepare("INSERT INTO HOMEWORK (`ClassID`,`description`, `isHistorical`, `dueDate`, `HomeworkName`) VALUES (?, ?, ?, ?, ?);");
+			$isHistorical = "False";
+			
+			$stmt->bind_param("issss", $ClassID, $Description, $isHistorical, $DueDate, $HomeworkName);	
+			$stmt->execute();
+			echo "homework added";
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}	
+	}
+	
+	function addActivity($ClassID, $ActName, $Date, $Description){
+		
 	}
 
 	//Looks up parent based on username, returns array with :
@@ -202,6 +222,62 @@ class dbHandler{
 			echo "Error: " . $e->getMessage();
 		}
 	}
+
+		//Looks up ClassInfo based on ClassID, returns array with :
+	//0 = ClassID // 1 = ClassName // 2 = TeacherID // 3 = ClassRoom
+	//4 = Description // 5 = ClassTime
+	function getHomeworkInfo($HomeworkID){
+		try{
+			$stmt = $this->conn->prepare("SELECT * FROM Homework WHERE HomeworkID=?;");
+			
+
+			$stmt->bind_param("i", $HomeworkID);	
+			$stmt->execute();
+			
+			$stmt->bind_result($HomeworkID, $ClassID, $Description, $isHistorical, $DueDate, $HomeworkName);
+			$result = array();
+			$stmt->fetch();
+			
+			$result[0] = $HomeworkID;
+			$result[1] = $HomeworkName;
+			$result[2] = $Description;
+			$result[3] = $DueDate;
+			$result[4] = $ClassID;
+			$result[5] = $isHistorical;
+			return $result;
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}
+	}
+	
+	function getClassHomework($ClassID){
+		$result = array();
+		$listCount = 0;
+		
+		try{
+			$stmt = $this->conn->prepare("select HomeworkID	from class, homework where class.classID = homework.classID and class.ClassID = ?;");
+			
+
+			$stmt->bind_param("i", $class);	
+			$class = $ClassID;
+			
+			$stmt->execute();
+						
+			$stmt->bind_result($HomeworkID);
+			
+			while ($stmt->fetch()) {
+				$result[$listCount] = $HomeworkID;
+				$listCount++;
+			}
+			return $result;
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}
+	}
 	
 	//Looks up classes based on the username and returns an array of class ID's 
 	//if given a username in the DB
@@ -261,7 +337,7 @@ class dbHandler{
 			
 			
 			}
-		}
+		}get
 		
 		//return array of classList if has info or -1 if invalid user
 		if(count($classList) > 0){

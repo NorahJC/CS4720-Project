@@ -39,7 +39,7 @@ CREATE TABLE parent_class(
 CREATE TABLE homework(
 	HomeworkID int AUTO_INCREMENT NOT NULL,
 	ClassID int,
-	dueDate dateTime NOT NULL,
+	dueDate varchar(50) NOT NULL,
 	Description varchar(200) NOT NULL,
 	isHistorical varchar(1) NOT NULL,
 	PRIMARY KEY(HomeworkID),
@@ -51,7 +51,8 @@ CREATE TABLE homework(
 CREATE TABLE activities(
 	ActivityID int AUTO_INCREMENT NOT NULL,
     ClassID int,
-    ActivityDate dateTime NOT NULL,
+    ActivityName varchar(50) NOT NULL,
+    ActivityDate varchar(50) NOT NULL,
     Description varchar(200) NOT NULL,
     CONSTRAINT actPk PRIMARY KEY(ActivityID),
     CONSTRAINT activclassFK FOREIGN KEY (ClassID) REFERENCES class(ClassID)
