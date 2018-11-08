@@ -10,6 +10,7 @@ class dbHandler{
 			getParent			*needed for runtime
 			getTeacher			*needed for runtime
 			getUsersClasses		*needed for runtime
+			login				*needed for runtime
 			
 		Need to be implemented methods: *all will be needed for runtime
 			addHomework
@@ -40,6 +41,7 @@ class dbHandler{
 	function __destruct(){
 		$this->conn->close();
 	}
+	
 	
 	//Administrator function to add Parent, accounts are made prior to runtime
 	function addParent($ParentName, $Username, $Pass){		
@@ -337,7 +339,7 @@ class dbHandler{
 			
 			
 			}
-		}get
+		}
 		
 		//return array of classList if has info or -1 if invalid user
 		if(count($classList) > 0){
@@ -346,6 +348,42 @@ class dbHandler{
 		else
 			return -1;
 	}
+	
+	function login ($username, $password){
+		$valid = 0;
+		
+		try{
+			$stmt = $this->conn->prepare("SELECT ParentID FROM PARENT WHERE Username=? and Pass=?;");	
+			$stmt->bind_param("ss", $username, $password);	
+			$stmt->execute();
+			
+			$stmt->bind_result($ParentID);
+			$stmt->fetch();
+			
+			if(count($ParentID) == 1){
+				$valid = 1;
+				return $valid;
+			}
+			//else we check the teacher
+			$stmt = $this->conn->prepare("SELECT TeacherID FROM TEACHER WHERE Username=? and Pass=?;");	
+			$stmt->bind_param("ss", $username, $password);	
+			$stmt->execute();
+			
+			$stmt->bind_result($TeacherID);
+			$stmt->fetch();
+			
+			if($TeacherID!=null){
+				$valid = 1;
+			}
+			return $valid;
+			
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}
+	}
+	
+	
 }
 ?>
-
