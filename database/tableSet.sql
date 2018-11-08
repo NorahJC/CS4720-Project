@@ -1,4 +1,9 @@
-CREATE TABLE teacher(
+/*
+This sql script will create all tables and constraints for the database to be used for the M.A.N. 
+School project for CS4720
+*/
+
+CREATE TABLE IF NOT EXISTS teacher(
 	TeacherID int AUTO_INCREMENT NOT NULL,
     TeacherName varchar(50) NOT NULL,
     Username varchar(50) NOT NULL,
@@ -7,7 +12,7 @@ CREATE TABLE teacher(
 );
 
 
-CREATE TABLE Parent(
+CREATE TABLE IF NOT EXISTS Parent(
 	ParentID int AUTO_INCREMENT NOT NULL,
     ParentName varchar(50) NOT NULL,
     Username varchar(50) NOT NULL,
@@ -16,7 +21,7 @@ CREATE TABLE Parent(
 );
 
 
-CREATE TABLE class(
+CREATE TABLE IF NOT EXISTS class(
 	ClassID int AUTO_INCREMENT NOT NULL,
     ClassName varchar(50) NOT NULL,
     ClassTime varchar(25) NOT NULL,
@@ -27,7 +32,7 @@ CREATE TABLE class(
     CONSTRAINT fkTeacherID FOREIGN KEY (TeacherID) REFERENCES Teacher(TeacherID)
 );
 
-CREATE TABLE parent_class(
+CREATE TABLE IF NOT EXISTS parent_class(
 	ClassID int,
     ParentID int,
 	CONSTRAINT parentFK FOREIGN KEY (ParentID) REFERENCES Parent(ParentID),
@@ -36,7 +41,7 @@ CREATE TABLE parent_class(
 
 
 
-CREATE TABLE homework(
+CREATE TABLE IF NOT EXISTS homework(
 	HomeworkID int AUTO_INCREMENT NOT NULL,
 	ClassID int,
 	dueDate varchar(50) NOT NULL,
@@ -48,7 +53,7 @@ CREATE TABLE homework(
 
 
 
-CREATE TABLE activities(
+CREATE TABLE IF NOT EXISTS activities(
 	ActivityID int AUTO_INCREMENT NOT NULL,
     ClassID int,
     ActivityName varchar(50) NOT NULL,
