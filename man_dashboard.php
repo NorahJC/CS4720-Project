@@ -9,8 +9,7 @@
 	else{
 		$userinfo = $dbMan->getTeacher($_SESSION['uname']);
 	}
-	$classList = $dbMan->getUsersClasses($userinfo[1]);
-	
+	$classList = $dbMan->getUsersClasses($userinfo[1]);	
 
 ?>
 
@@ -26,6 +25,22 @@
   <link rel="stylesheet" href="stylesheet_login.css">
   <link rel = "stylesheet" href = "stylesheet_homepage.css">
   <style>
+	  .btn-link{
+	  border:none;
+	  outline:none;
+	  background:none;
+	  cursor:pointer;
+	  color:#0000EE;
+	  padding:0;
+	  text-decoration:underline;
+	  font-family:inherit;
+	  font-size:inherit;
+	  white-space: nowrap;
+	}
+	.btn-link:active{
+		color:#FF0000;
+	}
+  
   </style>  
 </head>
 <body>
@@ -43,18 +58,20 @@
 	</div>
 </nav>	
 <div class = "container-fluid-1">
-		<form class="dashboard" action="man_homepage.html">
+
+		
 		<?php 
+		
+		
 			$count = 0;	//after 3 move to next row
 			foreach($classList as $class){
 				$info = $dbMan->getClassInfo($class);
+				echo '<form class="dashboard"  action="man_homepage.php" method="post">';
+				echo '<input type="hidden" name = "classID" value="'.$info[0].'">';
 				echo '<div class="col-sm-4 sidenav"><div class="well"><img src="logo_off.png" alt="Avatar" class="avatar">';
-				echo '<a href = "man_homepage.html"><p class = "login-page"><b>'.$info[1].'</b></p></a>	</div></div>	';
+				echo '<br><button type="submit" class="btn-link login-page"><b>'.$info[1].'</b></button></div></div></form>	';
 			}		
 		?>
-
-
-		</form>
 	</div>
 	<footer class="container-fluid-1">
 		<hr class = "style-one">

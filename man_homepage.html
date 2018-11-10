@@ -1,3 +1,27 @@
+<?php
+	session_start();
+	include("database/tempDbClass.php");	//include db stuff
+	$dbMan = new dbHandler();
+	$userinfo = array();
+	
+	echo $_POST["classID"];
+	
+	$classInfo = array();
+	$classInfo = $dbMan->getClassInfo($_POST["classID"]);
+	print_r($classInfo);
+	if($_SESSION['usertype'] == "parent"){
+		//
+	}
+	else{	//teacher
+		
+	}
+	
+	
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
