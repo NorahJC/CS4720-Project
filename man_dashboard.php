@@ -10,8 +10,7 @@
 		$userinfo = $dbMan->getTeacher($_SESSION['uname']);
 	}
 	$classList = $dbMan->getUsersClasses($userinfo[1]);	
-	
-	unset($_SESSION['currentClassID']);	//removes a session variable set from homepage
+
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +54,7 @@
         <span class="icon-bar"></span>                        
       </button>
       <a class="navbar-brand" href="#"><img src="logo_black.jpg" alt="homepage logo" class="homepage_logo" width = "90%" height = "80px" ></a>
-	  <a href="#" style = "color: white; font-size:20px; padding: 30px">Welcome, <?php echo $userinfo[0]?></a>
+	  <a href="#" style = "color: white; line-height:450%; font-size:20px; padding: 30px">Welcome, <?php echo $userinfo[0]?></a>
 	</div>
 </nav>	
 <div class = "container-fluid-1">
@@ -63,12 +62,8 @@
 		
 		<?php 
 		
-			if($classList == -1){
-				$classList = array();
-				echo "<h4><b>You are not associated with any classes.</b></h4>";
-				echo "<a href='login.php'>Go back to Main Page</a>";
-			}
-			
+		
+			$count = 0;	//after 3 move to next row
 			foreach($classList as $class){
 				$info = $dbMan->getClassInfo($class);
 				echo '<form class="dashboard"  action="man_homepage.php" method="post">';
