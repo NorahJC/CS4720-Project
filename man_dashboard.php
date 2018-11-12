@@ -10,7 +10,7 @@
 		$userinfo = $dbMan->getTeacher($_SESSION['uname']);
 	}
 	$classList = $dbMan->getUsersClasses($userinfo[1]);	
-
+	
 ?>
 
 <!DOCTYPE html>
@@ -62,8 +62,12 @@
 		
 		<?php 
 		
-		
-			$count = 0;	//after 3 move to next row
+			if($classList == -1){
+				$classList = array();
+				echo "<h4><b>You are not associated with any classes.</b></h4>";
+				echo "<a href='login.php'>Go back to Main Page</a>";
+			}
+			
 			foreach($classList as $class){
 				$info = $dbMan->getClassInfo($class);
 				echo '<form class="dashboard"  action="man_homepage.php" method="post">';

@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 class dbHandler{
 	//Temp PHP dbClass so we can just call this to do all the work for us
 	/*
