@@ -11,6 +11,7 @@
 	}
 	$classList = $dbMan->getUsersClasses($userinfo[1]);	
 	
+	unset($_SESSION['currentClassID']);	//removes a session variable set from homepage
 ?>
 
 <!DOCTYPE html>

@@ -2,21 +2,32 @@
 	session_start();
 	include("database/tempDbClass.php");	//include db stuff
 	$dbMan = new dbHandler();
-	$userinfo = array();
 	
-//	echo $_POST["classID"];
 	$classInfo = array();
-	$classInfo = $dbMan->getClassInfo($_POST["classID"]);
-
-	if($_SESSION['usertype'] == "parent"){
-		//
+	if(isset($_SESSION['currentClassID'])){				//set the current classID or maintain it
+		$classInfo = $dbMan->getClassInfo($_SESSION['currentClassID']);
 	}
-	else{	//teacher
+	else{
+		$_SESSION['currentClassID'] = $_POST["classID"];	
+		$classInfo = $dbMan->getClassInfo($_POST["classID"]);
+	}
+/*
+				echo '<label><b>Homework Title</b></label><br>';
+				echo '<input type="text" placeholder="Enter Homework Name" name="homeworkTitle" required><br>';
+				echo '<label><b>Description</b></label><br>';
+				echo '<input type="text" placeholder="Enter Homework Description" name="homeworkDescription" required><br>';
+				echo '<label><b>Due Date</b></label><br>';
+				echo '<input type="text" placeholder="Enter Due Date" name="homeworkDueDate" required><br>';
+				echo '<button style = "padding: 30px" type="submit">Add Homework</button></form><br>';
+
+function addHomework($ClassID, $HomeworkName, $DueDate, $Description){
+*/	
+	if($_SERVER["REQUEST_METHOD"] == "POST"){
+		if($_POST["action"] == "addHomework"){
+			$dbMan->addHomework($_SESSION['currentClassID'], $_POST['homeworkTitle'], $_POST['homeworkDueDate'], $_POST['homeworkDescription']);			
+		}
 		
 	}
-	
-	
-
 ?>
 
 
@@ -32,8 +43,23 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="stylesheet_login.css">
   <link rel = "stylesheet" href = "stylesheet_homepage.css">
-  <style>
-  </style>  
+   <style>
+	  .btn-link{
+	  border:none;
+	  outline:none;
+	  background:none;
+	  cursor:pointer;
+	  color:#0000EE;
+	  padding:0;
+	  font-family:inherit;
+	  font-size:inherit;
+	  white-space: nowrap;
+	}
+	.btn-link:active{
+		color:#FF0000;
+	}
+  
+  </style> 
 </head>
 <body>
 
@@ -48,13 +74,36 @@
       <a class="navbar-brand" href="#"><img src="logo_black.jpg" alt="homepage logo" class="homepage_logo" width = "90%" height = "80px" ></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
+	
+				
       <ul class="nav navbar-nav">
-        <li ><a href="man_homepage.html" style = "padding: 30px"> User Info</a></li>
-        <li><a href="#" style = "padding: 30px">Homework</a></li>
-        <li><a href="#" style = "padding: 30px">To-Do List</a></li>
-        <li><a href="#" style = "padding: 30px">Wish List</a></li>
-		<li><a href="#" style = "padding: 30px">Activities</a></li>
-		<li><a href="#" style = "padding: 30px">Message Board</a></li>
+        <li >
+				<form class="dashboard" action="man_dashboard.php" method="post">
+				<button style = "padding: 30px" type="submit" class="btn-link login-page">Dashboard</button></form>
+		</li>
+        <li>
+				<form class="dashboard" method="post">
+				<input type="hidden" name = "tab" value="homework">
+				<button style = "padding: 30px" type="submit" class="btn-link login-page">Homework</button></form>
+		</li>
+        <li>
+				<form class="dashboard" method="post">
+				<input type="hidden" name = "tab" value="todo">
+				<button style = "padding: 30px" type="submit" class="btn-link login-page">To-Do List</button></form>
+        <li>
+				<form class="dashboard" method="post">
+				<input type="hidden" name = "tab" value="wishlist">
+				<button style = "padding: 30px" type="submit" class="btn-link login-page">Wish List</button></form>
+		</li>
+		<li>
+				<form class="dashboard" method="post">
+				<input type="hidden" name = "tab" value="activities">
+				<button style = "padding: 30px" type="submit" class="btn-link login-page">Activities</button></form>
+		<li>
+				<form class="dashboard" method="post">
+				<input type="hidden" name = "tab" value="messageboard">
+				<button style = "padding: 30px" type="submit" class="btn-link login-page">Message Board</button></form>
+		</li>
 
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -72,7 +121,54 @@
 	<b> this is just an example of what the page can look like...</b>
 	  </p>
 	  <hr>
-	  <h3>Announcements</h3>
+<?php
+	if($_SERVER["REQUEST_METHOD"] == "POST"){
+		if($_POST['tab'] == "homework"){
+			echo "<h3>Homework<h3><hr>";
+			$homeworkIDs = $dbMan->getClassHomework($classInfo[0]);//function getClassHomework($ClassID){
+			foreach($homeworkIDs as $homework){
+				$homeworkInfo = $dbMan->getHomeworkInfo($homework);
+				echo '<b>'.$homeworkInfo[1].'</b> Due - '.$homeworkInfo[3].'<br>';
+				echo '<p>'.$homeworkInfo[2].'</p>';
+				echo "<br><br>";
+			}	
+			
+			
+			if($_SESSION['usertype'] != 'parent'){
+				echo "<h4>Add Homework</h4>";
+				echo '<form class="dashboard" method="post">';
+				echo '<input type="hidden" name = "tab" value="homework">';
+				echo '<input type="hidden" name = "action" value="addHomework">';
+				echo '<label><b>Homework Title</b></label><br>';
+				echo '<input type="text" placeholder="Enter Homework Name" name="homeworkTitle" required><br>';
+				echo '<label><b>Description</b></label><br>';
+				echo '<input type="text" placeholder="Enter Homework Description" name="homeworkDescription" required><br>';
+				echo '<label><b>Due Date</b></label><br>';
+				echo '<input type="text" placeholder="Enter Due Date" name="homeworkDueDate" required><br>';
+				echo '<button style = "padding: 30px" type="submit">Add Homework</button></form><br>';
+			}
+			
+
+			
+			
+		}
+		else if($_POST['tab'] == "todo"){
+			echo "<h3>To-Do List<h3><hr>";
+		}
+		else if($_POST['tab'] == "wishlist"){
+			echo "<h3>Wish List<h3><hr>";
+		}		
+		else if($_POST['tab'] == "activities"){
+			echo "<h3>Activities<h3><hr>";
+		}
+		else if($_POST['tab'] == "messageboard"){
+			echo "<h3>Message Board<h3><hr>";
+		}
+		else{
+			echo "<h3>Please select a tab</h3><hr>";
+		}
+	}  
+?>
 </div>  
 <div class="container-fluid text-center">    
   <div class="row content">

@@ -120,7 +120,6 @@ class dbHandler{
 			
 			$stmt->bind_param("issss", $ClassID, $Description, $isHistorical, $DueDate, $HomeworkName);	
 			$stmt->execute();
-			echo "homework added";
 		}
 		catch(PDOException $e)
 		{
@@ -260,7 +259,7 @@ class dbHandler{
 		$listCount = 0;
 		
 		try{
-			$stmt = $this->conn->prepare("select HomeworkID	from class, homework where class.classID = homework.classID and class.ClassID = ?;");
+			$stmt = $this->conn->prepare("select HomeworkID	from class, homework where class.classID = homework.classID and class.ClassID = ? order by dueDate asc;");
 			
 
 			$stmt->bind_param("i", $class);	
