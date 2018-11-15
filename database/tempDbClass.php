@@ -127,8 +127,16 @@ class dbHandler{
 		}	
 	}
 	
-	function addActivity($ClassID, $ActName, $Date, $Description){
-		
+	function addActivity($ClassID, $ActivityName, $ActivityDate, $Description){
+		try{			
+			$stmt = $this->conn->prepare("INSERT INTO ACTIVITIES (`ClassID`,`ActivityName`, `Description`, `ActivityDate`) VALUES (?, ?, ?, ?);");
+			$stmt->bind_param("isss", $ClassID, $ActivityName, $Description, $ActivityDate);
+			$stmt->execute();
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}	
 	}
 
 	//Looks up parent based on username, returns array with :
@@ -246,6 +254,60 @@ class dbHandler{
 			$result[3] = $DueDate;
 			$result[4] = $ClassID;
 			$result[5] = $isHistorical;
+			return $result;
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}
+	}
+
+		function getActivityInfo($ActivityID){
+		try{
+			$stmt = $this->conn->prepare("SELECT * FROM activities WHERE ActivityID=?;");
+			
+
+			$stmt->bind_param("i", $ActivityID);	
+			$stmt->execute();
+			
+			$stmt->bind_result($ActivityID, $ClassID, $ActivityName, $Description, $ActivityDate);
+			$result = array();
+			$stmt->fetch();
+			
+			$result[0] = $ActivityID;
+			$result[1] = $ClassID;
+			$result[2] = $ActivityName;
+			$result[3] = $ActivityDate;
+			$result[4] = $Description;
+			return $result;
+			
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}
+	}
+	
+	
+	function getClassActivities($ClassID){
+		$result = array();
+		$listCount = 0;
+		
+		try{
+			$stmt = $this->conn->prepare("select ActivityID	from class, activities where class.classID = activities.classID and class.ClassID = ? order by ActivityDate asc;");
+			
+
+			$stmt->bind_param("i", $class);	
+			$class = $ClassID;
+			
+			$stmt->execute();
+						
+			$stmt->bind_result($ActivityID);
+			
+			while ($stmt->fetch()) {
+				$result[$listCount] = $ActivityID;
+				$listCount++;
+			}
 			return $result;
 		}
 		catch(PDOException $e)

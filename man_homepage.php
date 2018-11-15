@@ -11,22 +11,15 @@
 		$_SESSION['currentClassID'] = $_POST["classID"];	
 		$classInfo = $dbMan->getClassInfo($_POST["classID"]);
 	}
-/*
-				echo '<label><b>Homework Title</b></label><br>';
-				echo '<input type="text" placeholder="Enter Homework Name" name="homeworkTitle" required><br>';
-				echo '<label><b>Description</b></label><br>';
-				echo '<input type="text" placeholder="Enter Homework Description" name="homeworkDescription" required><br>';
-				echo '<label><b>Due Date</b></label><br>';
-				echo '<input type="text" placeholder="Enter Due Date" name="homeworkDueDate" required><br>';
-				echo '<button style = "padding: 30px" type="submit">Add Homework</button></form><br>';
-
-function addHomework($ClassID, $HomeworkName, $DueDate, $Description){
-*/	
+	
+	
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		if($_POST["action"] == "addHomework"){
 			$dbMan->addHomework($_SESSION['currentClassID'], $_POST['homeworkTitle'], $_POST['homeworkDueDate'], $_POST['homeworkDescription']);			
 		}
-		
+		else if($_POST["action"] == "addActivity"){
+			$dbMan->addActivity($_SESSION['currentClassID'], $_POST['ActivityTitle'], $_POST['ActivityDate'], $_POST['ActivityDescription']);			
+		}
 	}
 ?>
 
@@ -147,19 +140,39 @@ function addHomework($ClassID, $HomeworkName, $DueDate, $Description){
 				echo '<input type="text" placeholder="Enter Due Date" name="homeworkDueDate" required><br>';
 				echo '<button style = "padding: 30px" type="submit">Add Homework</button></form><br>';
 			}
-			
-
-			
-			
 		}
 		else if($_POST['tab'] == "todo"){
 			echo "<h3>To-Do List<h3><hr>";
-		}
+		}	
 		else if($_POST['tab'] == "wishlist"){
 			echo "<h3>Wish List<h3><hr>";
 		}		
 		else if($_POST['tab'] == "activities"){
 			echo "<h3>Activities<h3><hr>";
+			
+			$ActivityIDs = $dbMan->getClassActivities($classInfo[0]);//function getClassHomework($ClassID){
+			foreach($ActivityIDs as $Activity){
+				$ActivityInfo = $dbMan->getActivityInfo($Activity);
+				echo '<b>'.$ActivityInfo[2].'</b> - '.$ActivityInfo[3].'<br>';
+				echo '<p>'.$ActivityInfo[4].'</p>';
+				echo "<br><br>";
+			}
+
+			if($_SESSION['usertype'] != 'parent'){
+				echo "<h4>Add New Activity</h4>";
+				echo '<form class="dashboard" method="post">';
+				echo '<input type="hidden" name = "tab" value="activities">';
+				echo '<input type="hidden" name = "action" value="addActivity">';
+				echo '<label><b>Activity Title</b></label><br>';
+				echo '<input type="text" placeholder="Enter Activity Name" name="ActivityTitle" required><br>';
+				echo '<label><b>Description</b></label><br>';
+				echo '<input type="text" placeholder="Enter Activity Description" name="ActivityDescription" required><br>';
+				echo '<label><b>Due Date</b></label><br>';
+				echo '<input type="text" placeholder="Enter Activity Date" name="ActivityDate" required><br>';
+				echo '<button style = "padding: 30px" type="submit">Add Activity</button></form><br>';
+			}			
+			
+			
 		}
 		else if($_POST['tab'] == "messageboard"){
 			echo "<h3>Message Board<h3><hr>";
