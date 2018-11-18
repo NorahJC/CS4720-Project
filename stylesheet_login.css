@@ -134,6 +134,14 @@ label.position-r{
     width: 45%; /* Could be more or less, depending on screen size */
 	/*text-align: center;*/
 }
+/* Modal Content/Box */
+.modal-content2 {
+    background-color: #D9EAF3; /* #fefefe;*/
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: none;
+    width: 45%; /* Could be more or less, depending on screen size */
+	/*text-align: center;*/
+}
 /***************************************REGISTRATION*****************************************************/
 select {
  
