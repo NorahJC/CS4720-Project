@@ -1,5 +1,7 @@
 <?php
 	error_reporting(0);
+	
+	
 	include("database/tempDbClass.php");	//include db stuff
 	session_start();						//initialize session
 	
@@ -24,6 +26,17 @@
 			header("location: man_dashboard.php");
 			
 			//MOVE TO THE MAIN PAGE
+		}
+		else if($_POST["type"] == "teacher" || $_POST["type"] == "parent"){				
+			if($_POST['type'] == "parent"){	//add Parent to DB
+				//function addParent($ParentName, $Username, $Pass){		
+				$dbMan->addParent($_POST["fname"], $_POST["uname"], $_POST["psw"]);	//fname, uname, psw\
+				//Does not currently connect to a course since not part of requirements
+			}
+			else if($_POST['type'] == "teacher"){	//add Teacher to DB
+				//function addTeacher($TeacherName, $Username, $Pass){
+				$dbMan->addTeacher($_POST["fname"], $_POST["uname"], $_POST["psw"]);	//fname, uname, psw
+			}
 		}
 		else{
 			$display = "Incorrect username or password"; 
@@ -98,8 +111,12 @@
 				<br>
 				<br>
 			</div>	
-				<label> Forgot <span class="psw"> <a href="#">password?</a></span>					  
-			</label>				
+			<div class= "container-login">	
+				<label class = "position-l"> Forgot <span class="psw"> <a href="#">password?</a></span>					  
+				</label>		
+				<label class = "position-r"> Don't Have An Account? <span class="register"> <a href="man_register.html">Register Here</a></span>					  
+				</label>
+			</div>
 		</form>
 	</div>
 	<footer class="container-fluid" >

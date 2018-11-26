@@ -62,8 +62,8 @@
 		
 			if($classList == -1){
 				$classList = array();
-				echo "<h4><b>You are not associated with any classes.</b></h4>";
-				echo "<a href='login.php'>Go back to Main Page</a>";
+				echo "<h4><b>You are not associated with any classes. Please contact an adminstrator</b></h4>";
+				echo "<a href='login.php'>Go back to Login Page</a>";
 			}
 			
 			foreach($classList as $class){

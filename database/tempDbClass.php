@@ -8,17 +8,17 @@ class dbHandler{
 			addTeacher		
 			addClass
 			addParentToClass
+			addHomework
+			addEvent
+			getEvents
+			getHomework
 			getParent			*needed for runtime
 			getTeacher			*needed for runtime
 			getUsersClasses		*needed for runtime
 			login				*needed for runtime
 			
 		Need to be implemented methods: *all will be needed for runtime
-			addHomework
-			addEvent
 			addWish
-			getHomework
-			getEvents
 			getMessages
 	*/
 	
@@ -48,7 +48,7 @@ class dbHandler{
 	function addParent($ParentName, $Username, $Pass){		
 		try{
 			$stmt = $this->conn->prepare("INSERT INTO PARENT (`ParentName`, `Username`, `Pass`) VALUES (?, ?, ?);");
-			
+			//should update to enforce uniqueness
 
 			$stmt->bind_param("sss", $ParentName, $Username, $Pass);	
 			$stmt->execute();

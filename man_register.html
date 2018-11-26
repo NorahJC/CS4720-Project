@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 	<title>M.A.N. High School Portal Registration</title>
@@ -83,7 +84,7 @@
 		});
 	</script>
 	<div class= "form_modal" id = "id00">
-		<form class ="modal-content"> <!--action ="man_dashboard.html"--> 
+		<form class ="modal-content"> <!--action ="login.php"--> 			
 			<div class="imgcontainer">
 			  <img src="logo_off.png" alt="Avatar" class="avatar">
 			</div>
@@ -105,7 +106,8 @@
 	</div>
 	<!-- modal for parent login-->
 	<div class= "form_modal">
-		<form class ="modal-content2" action ="man_dashboard.html"> 
+		<form class ="modal-content2" action ="login.php"> 
+		<input type="hidden" name = "type" value="parent">
 		<div id="id01" class="modal" role = "dialog">
 		<div class="click-to-open" data-modal="id01">
 		<div class = "modal-content2 animate">
@@ -162,7 +164,8 @@
 	</div>
 	<!-- modal for teacher login-->
 	<div class= "form_modal">
-		<form class ="modal-content2" action ="man_dashboard.html"> 
+		<form class ="modal-content2" method="POST" action ="login.php"> 
+		<input type="hidden" name = "type" value="teacher">
 		<div id="id02" class="modal">
 		<div class="click-to-open" data-modal="id02" role = "dialog">
 		<div class = "modal-content2 animate">
@@ -188,11 +191,6 @@
 				<input type="password" placeholder="Enter Password" name="psw" required>
 				<br>					
 				<button id= "tregbutton" type="submit" value = "Go to MAN Login">Register</button>
-				<!--script type="text/javascript">
-					document.getElementById("tregbutton").onclick = function () {
-						location.href = "man_dashboard.html";
-					};
-				</script-->
 				<br>
 				<button class = "toreg"><span class="cancel" style = "float: center"><a href="man_register.html">Cancel</a></span></button>
 				<br>
