@@ -445,7 +445,52 @@ class dbHandler{
 			echo "Error: " . $e->getMessage();
 		}
 	}
+	function addMessage($ClassID, $TeacherID, $ParentID, $Content){
+	    if(strlen(trim($Content)) == 0)
+	    {
+	        return;
+	    }
+	    $time = null; //stores default current time
+	    try{
+			$stmt = $this->conn->prepare("INSERT INTO messages (`ClassID`, `TeacherID`, `ParentID`, `TimeSent`, `Content`) VALUES (?, ?, ?, ?, ?);");
+			
+			$stmt->bind_param("iiiss", $ClassID, $TeacherID, $ParentID, $time, $Content);	
+			$stmt->execute();
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}
+	}
 	
+	function getAllMessages($ClassID, $TeacherID, $ParentID){
+		try{
+			$stmt = $this->conn->prepare("SELECT * FROM messages WHERE ClassID=? and TeacherID=? and ParentID=?;");
+			
+
+			$stmt->bind_param("iii", $ClassID, $TeacherID, $ParentID);	
+			$stmt->execute();
+			
+			$stmt->bind_result($ClassID, $TeacherID, $ParentID, $time, $Content);
+			$result = array();
+			$count = 0;
+			while($stmt->fetch())
+			{
+			    $result[$count++] = $TeacherID.": ".$Content;
+			}
+			
+			/*$result[0] = $ClassID;
+			$result[1] = $TeacherID;
+			$result[2] = $ParentID;
+			$result[3] = $time;
+			$result[4] = $Content;*/
+			return $result;
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}
+	}
 	
 }
 ?>

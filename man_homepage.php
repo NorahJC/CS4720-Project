@@ -2,7 +2,7 @@
 	session_start();
 	include("database/tempDbClass.php");	//include db stuff
 	$dbMan = new dbHandler();
-	
+	$classInfo;
 	$classInfo = array();
 	if(isset($_SESSION['currentClassID'])){				//set the current classID or maintain it
 		$classInfo = $dbMan->getClassInfo($_SESSION['currentClassID']);
@@ -12,6 +12,7 @@
 		$classInfo = $dbMan->getClassInfo($_POST["classID"]);
 	}
 	
+
 	
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		if($_POST["action"] == "addHomework"){
@@ -20,7 +21,13 @@
 		else if($_POST["action"] == "addActivity"){
 			$dbMan->addActivity($_SESSION['currentClassID'], $_POST['ActivityTitle'], $_POST['ActivityDate'], $_POST['ActivityDescription']);			
 		}
+		else if($_POST["action"] == "addMessage"){
+			$dbMan->addMessage($_SESSION['currentClassID'], $classInfo[3], $_POST["sendTo"], $_POST["content"]); //make alternate for parent and teacher
+		}
 	}
+		//Looks up ClassInfo based on ClassID, returns array with :
+	//0 = ClassID // 1 = ClassName // 2 = TeacherID // 3 = ClassRoom
+	//4 = Description // 5 = ClassTime
 ?>
 
 
@@ -179,7 +186,26 @@
 			
 		}
 		else if($_POST['tab'] == "messageboard"){
+			//function getAllMessages($ClassID, $TeacherID, $ParentID){
+					//Looks up ClassInfo based on ClassID, returns array with :
+	//0 = ClassID // 1 = ClassName // 2 = TeacherID // 3 = ClassRoom
+	//4 = Description // 5 = ClassTime
+			$messages = $dbMan->getAllMessages($classInfo[0], $classInfo[3], 1);
 			echo "<h3>Message Board<h3><hr>";
+			echo '<textarea rows="10" cols="50" readonly>';
+			foreach($messages as $m)
+			{
+				echo $m."\n";
+			}
+			echo '</textarea>
+			<form method="Post"><select name="sendTo"><option value=1>class 1</option><option value=2>class 2</option><option value=3>class 3</option>';
+			echo '<option value=4>class 4</option></select>
+					<input type="text" name="content" maxlength="49" autocomplete="off"/><br>';
+			echo '<input type="hidden" name="action" value="addMessage">
+			<input type="hidden" name="tab" value="messageboard">';
+			echo '<button style = "padding: 30px" type="submit">Send</button></form>';
+			
+			
 		}
 		else if($_POST['tab'] == "userInfo"){
 			echo "<h3>User Information<h3><hr>";

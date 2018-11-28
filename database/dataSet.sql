@@ -31,7 +31,7 @@ VALUES
 ("Sarah North", "snorth", "12345");
 
 /*Create Teachers*/
-INSERT INTO TEACHERS
+INSERT INTO TEACHER
 (TeacherName, Username, Pass)
 VALUES
 ("Jose Garrido", "jgarrido", "teacher123"),
