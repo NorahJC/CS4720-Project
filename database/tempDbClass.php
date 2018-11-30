@@ -452,9 +452,9 @@ class dbHandler{
 	        return;
 	    }
 	    $time = null; //stores default current time
+
 	    try{
 			$stmt = $this->conn->prepare("INSERT INTO messages (`ClassID`, `TeacherID`, `ParentID`, `TimeSent`, `Content`) VALUES (?, ?, ?, ?, ?);");
-			
 			$stmt->bind_param("iiiss", $ClassID, $TeacherID, $ParentID, $time, $Content);	
 			$stmt->execute();
 		}
@@ -477,7 +477,7 @@ class dbHandler{
 			$count = 0;
 			while($stmt->fetch())
 			{
-			    $result[$count++] = $TeacherID.": ".$Content;
+			    $result[$count++] = $Content;
 			}
 			
 			/*$result[0] = $ClassID;
@@ -522,10 +522,10 @@ class dbHandler{
 
 	function addWish($ClassID, $WishName, $Description){
 		try{			
-			$stmt = $this->conn->prepare("INSERT INTO HOMEWORK (`ClassID`,`WishName`, `Description`) VALUES (?, ?, ?);");
-			
+			$stmt = $this->conn->prepare("INSERT INTO WISH (`ClassID`,`WishName`, `Description`) VALUES (?, ?, ?);");
 			$stmt->bind_param("iss", $ClassID, $WishName, $Description);	
 			$stmt->execute();
+			
 		}
 		catch(PDOException $e)
 		{
@@ -542,7 +542,7 @@ class dbHandler{
 			if($ParentID[3] != NULL){				
 				$stmt = $this->conn->prepare("INSERT INTO PARENT_WISH (`ParentID`, `WishID`) VALUES (?, ?);");
 				
-				$stmt->bind_param("ii", $ClassID, $ParentID[3]);	
+				$stmt->bind_param("ii",$ParentID[3], $WishID);	
 				$stmt->execute();
 			}
 			

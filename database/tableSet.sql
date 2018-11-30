@@ -78,5 +78,5 @@ CREATE TABLE IF NOT EXISTS parent_wish(
 	ParentID int,
     WishID int,
 	CONSTRAINT wishFK FOREIGN KEY (WishID) REFERENCES wish(WishID),
-    CONSTRAINT parentFK FOREIGN KEY (ParentID) REFERENCES parent(ParentID)
+    CONSTRAINT parentWishFK FOREIGN KEY (ParentID) REFERENCES parent(ParentID)
 );

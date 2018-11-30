@@ -20,7 +20,7 @@
 			$dbMan->addActivity($_SESSION['currentClassID'], $_POST['ActivityTitle'], $_POST['ActivityDate'], $_POST['ActivityDescription']);			
 		}
 		else if($_POST["action"] == "addMessage"){
-			$dbMan->addMessage($_SESSION['currentClassID'], $classInfo[3], $_POST["sendTo"], $_POST["content"]); //make alternate for parent and teacher
+			$dbMan->addMessage($_SESSION['currentClassID'], $classInfo[2], 1, $_SESSION['uname'].' : '.$_POST["content"]); //make alternate for parent and teacher
 		}
 		else if($_POST["action"] == "joinWish"){
 			$dbMan->addParentToWish($_SESSION['uname'], $_POST['wish']);
@@ -173,8 +173,8 @@
 						echo '-'.$sInfo[0].'<br>';
 					}
 					echo '<br>';
-					
-					echo "<h4>Add New Wish</h4>";
+				}
+					echo "<br><h4>Add New Wish</h4>";
 					echo '<form class="dashboard" method="post">';
 					echo '<input type="hidden" name = "tab" value="wishlist">';
 					echo '<input type="hidden" name = "action" value="createWish">';
@@ -184,17 +184,17 @@
 					echo '<input type="text" placeholder="Enter Wish Description" name="wishDescription" required><br>';					
 					echo '<button style = "padding: 30px" type="submit">Add Activity</button></form><br><br>';
 
-				}
+				
 			}
 			else{									//parent view
 				foreach($wishIDs as $wish){
 					$wishInfo = $dbMan->getWishInfo($wish);
 					echo '<b>'.$wishInfo[2].'</b><br>';
-					echo '<p>'.$wishInfo[3].'</p>';
+					echo '<div><p>'.$wishInfo[3].'</p>';
 					echo '<form class="dashboard" method="post">';
 					echo '<input type="hidden" name="tab" value="wishlist"><input type="hidden" name="action" value="joinWish">';
 					echo '<input type="hidden" name="wish" value="'.$wishInfo[0].'">';
-					echo '<button style = "padding: 20px" type="submit">Join this Wish</button></form>'
+					echo '<button style = "padding: 10px" type="submit">Join</button></form></div><hr>';
 				}		
 			}			
 		}		
@@ -230,7 +230,7 @@
 					//Looks up ClassInfo based on ClassID, returns array with :
 	//0 = ClassID // 1 = ClassName // 2 = TeacherID // 3 = ClassRoom
 	//4 = Description // 5 = ClassTime
-			$messages = $dbMan->getAllMessages($classInfo[0], $classInfo[3], 1);
+			$messages = $dbMan->getAllMessages($classInfo[0], $classInfo[2], 1);
 			echo "<h3>Message Board<h3><hr>";
 			echo '<textarea rows="10" cols="50" readonly>';
 			foreach($messages as $m)
@@ -238,9 +238,8 @@
 				echo $m."\n";
 			}
 			echo '</textarea>
-			<form method="Post"><select name="sendTo"><option value=1>class 1</option><option value=2>class 2</option><option value=3>class 3</option>';
-			echo '<option value=4>class 4</option></select>
-					<input type="text" name="content" maxlength="49" autocomplete="off"/><br>';
+			<form method="Post">
+			<input type="text" name="content" maxlength="49" autocomplete="off"/><br>';
 			echo '<input type="hidden" name="action" value="addMessage">
 			<input type="hidden" name="tab" value="messageboard">';
 			echo '<button style = "padding: 30px" type="submit">Send</button></form>';
@@ -264,8 +263,8 @@
 		}
 	}  
 ?>
+<br><br><br>
 </div>  
-
 <footer class="container-fluid-1">
 	<hr class = "style-one">
 	<p class = "login-page">Copyright © 2018
