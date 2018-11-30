@@ -156,6 +156,39 @@
 		}
 		else if($_POST['tab'] == "todo"){
 			echo "<h3>To-Do List<h3><hr>";
+			$homeworkIDs = $dbMan->getClassHomework($classInfo[0]);//function getClassHomework($ClassID){
+			$ActivityIDs = $dbMan->getClassActivities($classInfo[0]);
+			$todayDate = date('m/d/Y');
+			$toDoList = array();
+			$toDoListCount = 0;
+			foreach($homeworkIDs as $homework){
+				$homeworkInfo = $dbMan->getHomeworkInfo($homework);
+				if($homeworkInfo[3] < $todayDate){
+				
+				}
+				else{
+					$toDoList[$toDoListCount] = array($homeworkInfo[1], $homeworkInfo[3], $homeworkInfo[2]);
+					$toDoListCount++;
+				}
+			}	
+			foreach($ActivityIDs as $Activity){
+				$activityInfo = $dbMan->getActivityInfo($Activity);
+				if($activityInfo[3] < $todayDate){
+				
+				}
+				else{
+					$toDoList[$toDoListCount] = array($activityInfo[2], $activityInfo[3], $activityInfo[4]);
+					$toDoListCount++;
+				}
+			}
+			$i = 0;
+			foreach($toDoList as $toDo){
+				echo '<b>'.$toDo[0].'</b> on - '.$toDo[1].'<br>';
+				echo "<p>".$toDo[2]."<br><br>";
+			}
+
+			
+			
 		}	
 		else if($_POST['tab'] == "wishlist"){
 			echo "<h3>Wish List<h3><hr>";
@@ -247,6 +280,7 @@
 			
 		}
 		else if($_POST['tab'] == "userInfo"){
+			
 			echo "<h3>User Information<h3><hr>";
 			$userInfo = array();
 			if($_SESSION['usertype'] != 'parent'){
@@ -256,10 +290,13 @@
 				echo "<p>You are logged in as a Parent</p>";
 			}
 			echo "<p><b>Username:</b> ".$_SESSION['uname']."</p>";
+			echo "<h3>Please select a tab</h3><hr>";
+			echo "<h3>Room - ".$classInfo[3];
+			echo "<br>Time - ".$classInfo[5]."</h3>";
 			
 		}
 		else{
-			echo "<h3>Please select a tab</h3><hr>";
+			
 		}
 	}  
 ?>

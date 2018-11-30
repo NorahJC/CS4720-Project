@@ -233,9 +233,7 @@ class dbHandler{
 		}
 	}
 
-		//Looks up ClassInfo based on ClassID, returns array with :
-	//0 = ClassID // 1 = ClassName // 2 = TeacherID // 3 = ClassRoom
-	//4 = Description // 5 = ClassTime
+		
 	function getHomeworkInfo($HomeworkID){
 		try{
 			$stmt = $this->conn->prepare("SELECT * FROM Homework WHERE HomeworkID=?;");
