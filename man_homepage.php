@@ -12,8 +12,6 @@
 		$classInfo = $dbMan->getClassInfo($_POST["classID"]);
 	}
 	
-
-	
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		if($_POST["action"] == "addHomework"){
 			$dbMan->addHomework($_SESSION['currentClassID'], $_POST['homeworkTitle'], $_POST['homeworkDueDate'], $_POST['homeworkDescription']);			
@@ -24,10 +22,14 @@
 		else if($_POST["action"] == "addMessage"){
 			$dbMan->addMessage($_SESSION['currentClassID'], $classInfo[3], $_POST["sendTo"], $_POST["content"]); //make alternate for parent and teacher
 		}
+		else if($_POST["action"] == "joinWish"){
+			$dbMan->addParentToWish($_SESSION['uname'], $_POST['wish']);
+		}
+		else if($_POST["action"] == "createWish"){
+			$dbMan->addWish($_SESSION['currentClassID'], $_POST["wishTitle"], $_POST["wishDescription"]);
+		}
+		
 	}
-		//Looks up ClassInfo based on ClassID, returns array with :
-	//0 = ClassID // 1 = ClassName // 2 = TeacherID // 3 = ClassRoom
-	//4 = Description // 5 = ClassTime
 ?>
 
 
@@ -157,6 +159,44 @@
 		}	
 		else if($_POST['tab'] == "wishlist"){
 			echo "<h3>Wish List<h3><hr>";
+			
+			$wishIDs = $dbMan->getClassWishes($classInfo[0]);//function getClassWishes($ClassID){				
+			if($_SESSION['usertype'] != 'parent'){ //teacher view
+				$subs = array();
+				foreach($wishIDs as $wish){
+					$wishInfo = $dbMan->getWishInfo($wish);
+					$subs = $dbMan->getWishSubscribers($wish);	//function getWishSubscribers($WishID){
+					echo '<b>'.$wishInfo[2].'</b><br>';
+					echo '<p>'.$wishInfo[3].'</p><p>Current parents signed up:</p>';
+					foreach($subs as $s){
+						$sInfo = $dbMan->getParent($s);
+						echo '-'.$sInfo[0].'<br>';
+					}
+					echo '<br>';
+					
+					echo "<h4>Add New Wish</h4>";
+					echo '<form class="dashboard" method="post">';
+					echo '<input type="hidden" name = "tab" value="wishlist">';
+					echo '<input type="hidden" name = "action" value="createWish">';
+					echo '<label><b>Wish Title</b></label><br>';
+					echo '<input type="text" placeholder="Enter Wish Name" name="wishTitle" required><br>';
+					echo '<label><b>Description</b></label><br>';
+					echo '<input type="text" placeholder="Enter Wish Description" name="wishDescription" required><br>';					
+					echo '<button style = "padding: 30px" type="submit">Add Activity</button></form><br><br>';
+
+				}
+			}
+			else{									//parent view
+				foreach($wishIDs as $wish){
+					$wishInfo = $dbMan->getWishInfo($wish);
+					echo '<b>'.$wishInfo[2].'</b><br>';
+					echo '<p>'.$wishInfo[3].'</p>';
+					echo '<form class="dashboard" method="post">';
+					echo '<input type="hidden" name="tab" value="wishlist"><input type="hidden" name="action" value="joinWish">';
+					echo '<input type="hidden" name="wish" value="'.$wishInfo[0].'">';
+					echo '<button style = "padding: 20px" type="submit">Join this Wish</button></form>'
+				}		
+			}			
 		}		
 		else if($_POST['tab'] == "activities"){
 			echo "<h3>Activities<h3><hr>";

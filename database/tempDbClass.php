@@ -445,6 +445,7 @@ class dbHandler{
 			echo "Error: " . $e->getMessage();
 		}
 	}
+	
 	function addMessage($ClassID, $TeacherID, $ParentID, $Content){
 	    if(strlen(trim($Content)) == 0)
 	    {
@@ -484,6 +485,114 @@ class dbHandler{
 			$result[2] = $ParentID;
 			$result[3] = $time;
 			$result[4] = $Content;*/
+			return $result;
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}
+	}
+	
+	function getClassWishes($ClassID){
+		$result = array();
+		$listCount = 0;
+		
+		try{
+			$stmt = $this->conn->prepare("select WishID	from class, wish where class.classID = wish.classID and class.ClassID = ?;");
+			
+
+			$stmt->bind_param("i", $class);	
+			$class = $ClassID;
+			
+			$stmt->execute();
+						
+			$stmt->bind_result($WishID);
+			
+			while ($stmt->fetch()) {
+				$result[$listCount] = $WishID;
+				$listCount++;
+			}
+			return $result;
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}
+	}
+
+	function addWish($ClassID, $WishName, $Description){
+		try{			
+			$stmt = $this->conn->prepare("INSERT INTO HOMEWORK (`ClassID`,`WishName`, `Description`) VALUES (?, ?, ?);");
+			
+			$stmt->bind_param("iss", $ClassID, $WishName, $Description);	
+			$stmt->execute();
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}	
+	}
+
+
+
+
+	function addParentToWish($ParentUsername, $WishID){
+		try{
+			$ParentID = $this->getParent($ParentUsername); //returns array with 3 = ID
+			if($ParentID[3] != NULL){				
+				$stmt = $this->conn->prepare("INSERT INTO PARENT_WISH (`ParentID`, `WishID`) VALUES (?, ?);");
+				
+				$stmt->bind_param("ii", $ClassID, $ParentID[3]);	
+				$stmt->execute();
+			}
+			
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}	
+	}
+
+	function getWishInfo($WishID){
+		try{
+			$stmt = $this->conn->prepare("SELECT * FROM wish WHERE WishID=?;");
+			
+
+			$stmt->bind_param("i", $WishID);	
+			$stmt->execute();
+			
+			$stmt->bind_result($WishID, $ClassID, $WishName, $Description);
+			$result = array();
+			$stmt->fetch();
+			
+			$result[0] = $WishID;
+			$result[1] = $ClassID;
+			$result[2] = $WishName;
+			$result[3] = $Description;;
+			return $result;
+		}
+		catch(PDOException $e)
+		{
+			echo "Error: " . $e->getMessage();
+		}
+	}
+	
+	function getWishSubscribers($WishID){
+		$result = array();
+		$listCount = 0;
+		
+		try{
+			$stmt = $this->conn->prepare("SELECT ParentID FROM parent_wish WHERE WishID=?;");
+
+			$stmt->bind_param("i", $WishID);	
+			$stmt->execute();
+			
+			$stmt->bind_result($ParentID);
+			
+			while ($stmt->fetch()) {
+				$result[$listCount] = $ParentID;
+				$listCount++;
+			}
 			return $result;
 		}
 		catch(PDOException $e)

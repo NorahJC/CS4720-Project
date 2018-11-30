@@ -40,16 +40,18 @@ CREATE TABLE IF NOT EXISTS parent_class(
 );
 
 
-
+/*INSERT INTO HOMEWORK (`ClassID`,`description`, `isHistorical`, `dueDate`, `HomeworkName`) VALUES (?, ?, ?, ?, ?);")*/
 CREATE TABLE IF NOT EXISTS homework(
 	HomeworkID int AUTO_INCREMENT NOT NULL,
 	ClassID int,
-	dueDate varchar(50) NOT NULL,
 	Description varchar(200) NOT NULL,
 	isHistorical varchar(1) NOT NULL,
+	dueDate varchar(50) NOT NULL,
+	HomeworkName varchar(50) NOT NULL,
 	PRIMARY KEY(HomeworkID),
 	CONSTRAINT hwkclassFK FOREIGN KEY (ClassID) REFERENCES class(ClassID)
 );
+
 
 
 
@@ -61,4 +63,20 @@ CREATE TABLE IF NOT EXISTS activities(
     Description varchar(200) NOT NULL,
     CONSTRAINT actPk PRIMARY KEY(ActivityID),
     CONSTRAINT activclassFK FOREIGN KEY (ClassID) REFERENCES class(ClassID)
+);
+
+CREATE TABLE IF NOT EXISTS wish(
+	WishID int AUTO_INCREMENT NOT NULL,
+    ClassID int,
+    WishName varchar(50) NOT NULL,
+    Description varchar(200) NOT NULL,
+    CONSTRAINT wishPk PRIMARY KEY(WishID),
+    CONSTRAINT wishClassFK FOREIGN KEY (ClassID) REFERENCES class(ClassID)
+);
+
+CREATE TABLE IF NOT EXISTS parent_wish(
+	ParentID int,
+    WishID int,
+	CONSTRAINT wishFK FOREIGN KEY (WishID) REFERENCES wish(WishID),
+    CONSTRAINT parentFK FOREIGN KEY (ParentID) REFERENCES parent(ParentID)
 );
