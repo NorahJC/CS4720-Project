@@ -124,7 +124,7 @@
 	  <?php echo $classInfo[4]; ?>
 	<br>
 	<br>
-	<b> this is just an example of what the page can look like...</b>
+	<b> In order to navigate this page, click on the tabs.</b>
 	  </p>
 	  <hr>
 <?php

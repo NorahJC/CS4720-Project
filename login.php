@@ -10,6 +10,7 @@
 	$userInfo = array();
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$found = $dbMan->login($_POST['uname'], $_POST['psw']);
+		
 		if($found == 1){	
 			//Determine if teacher/parent
 			$_SESSION['uname'] = $_POST['uname'];
@@ -29,12 +30,12 @@
 		else if($_POST["type"] == "teacher" || $_POST["type"] == "parent"){				
 			if($_POST['type'] == "parent"){	//add Parent to DB
 				//function addParent($ParentName, $Username, $Pass){		
-				$dbMan->addParent($_POST["name"], $_POST["user"], $_POST["psw"]);	//fname, uname, psw\
+				$dbMan->addParent($_POST["fname"], $_POST["uname"], $_POST["psw"]);	//fname, uname, psw\
 				//Does not currently connect to a course since not part of requirements
 			}
 			else if($_POST['type'] == "teacher"){	//add Teacher to DB
 				//function addTeacher($TeacherName, $Username, $Pass){
-				$dbMan->addTeacher($_POST["name"], $_POST["user"], $_POST["psw"]);	//fname, uname, psw
+				$dbMan->addTeacher($_POST["fname"], $_POST["uname"], $_POST["psw"]);	//fname, uname, psw
 			}
 		}
 		else{
